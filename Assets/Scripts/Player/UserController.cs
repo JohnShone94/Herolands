@@ -39,6 +39,34 @@ public class UserController : MonoBehaviour
         }
     }
 
+    private void MouseHover()
+    {
+        if(player.hud.MouseInBounds())
+        {
+            GameObject hoverObject = FindHitObject();
+            if(hoverObject)
+            {
+                if(player.selectedObject)
+                {
+                    player.selectedObject.SetHoverState(hoverObject);
+                }
+                else if(hoverObject.name != "Ground")
+                {
+                    Player owner = hoverObject.transform.root.GetComponent<Player>();
+                    if(owner)
+                    {
+                        Unit unit = hoverObject.transform.parent.GetComponent<Unit>();
+                        Building building = hoverObject.transform.parent.GetComponent<Building>();
+                        if(owner.username == player.username && (unit || building))
+                        {
+                            player.hud.SetCursorState(CursorState.Select);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private void LeftMouseClick()
     {
         if(player.hud.MouseInBounds())
@@ -53,11 +81,11 @@ public class UserController : MonoBehaviour
                 }
                 else if (hitObject.name != "Ground")
                 {
-                    Objects objects = hitObject.transform.root.GetComponent<Objects>();
+                    Objects objects = hitObject.transform.parent.GetComponent<Objects>();
                     if(objects)
                     {
                         player.selectedObject = objects;
-                        objects.SetSelection(true);
+                        objects.SetSelection(true, player.hud.GetPlayingArea());
                     }
                 }
             }
@@ -67,7 +95,7 @@ public class UserController : MonoBehaviour
     {
         if(player.hud.MouseInBounds() && !Input.GetKey(KeyCode.LeftAlt) && player.selectedObject)
         {
-            player.selectedObject.SetSelection(false);
+            player.selectedObject.SetSelection(false, player.hud.GetPlayingArea());
             player.selectedObject = null;
         }
     }
@@ -100,24 +128,34 @@ public class UserController : MonoBehaviour
         float zPos = Input.mousePosition.y;
         Vector3 movement = new Vector3(0, 0, 0);
 
+        bool mouseScroll = false;
+
         //Moving the Camera Horizontally
         if(xPos >= 0 && xPos < ResourceManager.ScrollBarrier)
         {
             movement.x -= ResourceManager.ScrollSpeed;
+            player.hud.SetCursorState(CursorState.PanLeft);
+            mouseScroll = true;
         }
         else if(xPos <= Screen.width && xPos > Screen.width - ResourceManager.ScrollBarrier )
         {
             movement.x += ResourceManager.ScrollSpeed;
+            player.hud.SetCursorState(CursorState.PanRight);
+            mouseScroll = true;
         }
 
         //Moving the Camera Vetically
         if (zPos >= 0 && zPos < ResourceManager.ScrollBarrier)
         {
             movement.z -= ResourceManager.ScrollSpeed;
+            player.hud.SetCursorState(CursorState.PanDown);
+            mouseScroll = true;
         }
         else if (zPos <= Screen.height && zPos > Screen.height - ResourceManager.ScrollBarrier)
         {
             movement.z += ResourceManager.ScrollSpeed;
+            player.hud.SetCursorState(CursorState.PanUp);
+            mouseScroll = true;
         }
 
         movement = Camera.main.transform.TransformDirection(movement);
@@ -147,6 +185,11 @@ public class UserController : MonoBehaviour
         if(destination != origin)
         {
             Camera.main.transform.position = Vector3.MoveTowards(origin, destination, Time.deltaTime * ResourceManager.ScrollSpeed);
+        }
+
+        if(!mouseScroll)
+        {
+            player.hud.SetCursorState(CursorState.Select);
         }
     }
 

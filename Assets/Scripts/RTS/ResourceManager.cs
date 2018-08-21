@@ -57,7 +57,37 @@ namespace RTSManager
             }
         }
 
-        public static Vector3 InvalidPosition { get { return invalidPosition; } }
+        public static Vector3 InvalidPosition
+        {
+            get
+            {
+                return invalidPosition;
+            }
+        }
+
+        public static Bounds InvalidBounds
+        {
+            get
+            {
+                return invalidBounds;
+            }
+        }
+
+        public static GUISkin SelectBoxSkin
+        {
+            get
+            {
+                return selectBoxSkin;
+            }
+        }
+
+        public static void StoreSelectBoxItems(GUISkin skin)
+        {
+            selectBoxSkin = skin;
+        }
+
         private static Vector3 invalidPosition = new Vector3(-99999, -99999, -99999);
+        private static Bounds invalidBounds = new Bounds(new Vector3(-99999, -99999, -99999), new Vector3(0,0,0));
+        private static GUISkin selectBoxSkin;
     }
 }
