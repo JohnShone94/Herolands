@@ -81,13 +81,43 @@ namespace RTSManager
             }
         }
 
+        public static int BuildSpeed
+        {
+            get
+            {
+                return 2;
+            }
+        }
+
         public static void StoreSelectBoxItems(GUISkin skin)
         {
             selectBoxSkin = skin;
         }
+        public static void SetGameObjectList(PrefabsList objectList)
+        {
+            prefabList = objectList;
+        }
+        public static GameObject GetBuilding(string name)
+        {
+            return prefabList.GetBuildings(name);
+        }
+        public static GameObject GetUnit(string name)
+        {
+            return prefabList.GetUnits(name);
+        }
+        public static GameObject GetPlayerObject()
+        {
+            return prefabList.GetPlayerObject();
+        }
+        public static Texture2D GetBuildImage(string name)
+        {
+            return prefabList.GetBuildImage(name);
+        }
+
 
         private static Vector3 invalidPosition = new Vector3(-99999, -99999, -99999);
         private static Bounds invalidBounds = new Bounds(new Vector3(-99999, -99999, -99999), new Vector3(0,0,0));
         private static GUISkin selectBoxSkin;
+        private static PrefabsList prefabList;
     }
 }

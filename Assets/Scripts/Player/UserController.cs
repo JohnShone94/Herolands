@@ -129,15 +129,43 @@ public class UserController : MonoBehaviour
         Vector3 movement = new Vector3(0, 0, 0);
 
         bool mouseScroll = false;
+        /*
+                //Moving the Camera Horizontally
+                if(xPos >= 0 && xPos < ResourceManager.ScrollBarrier)
+                {
+                    movement.x -= ResourceManager.ScrollSpeed;
+                    player.hud.SetCursorState(CursorState.PanLeft);
+                    mouseScroll = true;
+                }
+                else if(xPos <= Screen.width && xPos > Screen.width - ResourceManager.ScrollBarrier )
+                {
+                    movement.x += ResourceManager.ScrollSpeed;
+                    player.hud.SetCursorState(CursorState.PanRight);
+                    mouseScroll = true;
+                }
+
+                //Moving the Camera Vetically
+                if (zPos >= 0 && zPos < ResourceManager.ScrollBarrier)
+                {
+                    movement.z -= ResourceManager.ScrollSpeed;
+                    player.hud.SetCursorState(CursorState.PanDown);
+                    mouseScroll = true;
+                }
+                else if (zPos <= Screen.height && zPos > Screen.height - ResourceManager.ScrollBarrier)
+                {
+                    movement.z += ResourceManager.ScrollSpeed;
+                    player.hud.SetCursorState(CursorState.PanUp);
+                    mouseScroll = true;
+                } */
 
         //Moving the Camera Horizontally
-        if(xPos >= 0 && xPos < ResourceManager.ScrollBarrier)
+        if (Input.GetKey("a"))
         {
             movement.x -= ResourceManager.ScrollSpeed;
             player.hud.SetCursorState(CursorState.PanLeft);
             mouseScroll = true;
         }
-        else if(xPos <= Screen.width && xPos > Screen.width - ResourceManager.ScrollBarrier )
+        else if (Input.GetKey("d"))
         {
             movement.x += ResourceManager.ScrollSpeed;
             player.hud.SetCursorState(CursorState.PanRight);
@@ -145,13 +173,13 @@ public class UserController : MonoBehaviour
         }
 
         //Moving the Camera Vetically
-        if (zPos >= 0 && zPos < ResourceManager.ScrollBarrier)
+        if (Input.GetKey("s"))
         {
             movement.z -= ResourceManager.ScrollSpeed;
             player.hud.SetCursorState(CursorState.PanDown);
             mouseScroll = true;
         }
-        else if (zPos <= Screen.height && zPos > Screen.height - ResourceManager.ScrollBarrier)
+        else if (Input.GetKey("w"))
         {
             movement.z += ResourceManager.ScrollSpeed;
             player.hud.SetCursorState(CursorState.PanUp);
@@ -198,7 +226,7 @@ public class UserController : MonoBehaviour
         Vector3 origin = Camera.main.transform.eulerAngles;
         Vector3 destination = origin;
 
-        if(Input.GetKey(KeyCode.LeftAlt) && Input.GetMouseButtonDown(1))
+        if(Input.GetKey(KeyCode.LeftAlt) && Input.GetMouseButton(1))
         {
             destination.x -= Input.GetAxis("Mouse Y") * ResourceManager.RotateAmount;
             destination.y += Input.GetAxis("Mouse X") * ResourceManager.RotateAmount;
